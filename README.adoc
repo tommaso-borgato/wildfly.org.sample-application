@@ -75,6 +75,53 @@ podman run --rm -p 5000:5000 --volume ~/.registry/storage:/var/lib/registry regi
 podman push localhost:5000/myapp --tls-verify=false
 ----
 
+== PostgreSQL
+
+Start PostgreSQL:
+
+[source,shell]
+----
+podman run --rm --name my-postgres -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres postgres
+----
+
+Add some data to PostgreSQL:
+
+[source,bash]
+----
+podman exec -it my-postgres bash
+psql -U postgres
+CREATE TABLE TEST_TABLE (
+  id SERIAL PRIMARY KEY,
+  SOME_FIELD1 VARCHAR (50) NOT NULL,
+  SOME_FIELD2 VARCHAR (50) NOT NULL
+);
+insert into test_table values (1, 'prova1', 'prova1');
+insert into test_table values (2, 'prova2', 'prova2');
+insert into test_table values (3, 'prova3', 'prova3');
+commit;
+select * from TEST_TABLE;
+quit
+exit
+----
+
+[source,shell]
+----
+export POSTGRESQL_USER=postgres
+export POSTGRESQL_PASSWORD=admin
+export POSTGRESQL_HOST=localhost
+export POSTGRESQL_PORT=5432
+export POSTGRESQL_DATABASE=postgres
+export POSTGRESQL_JNDI=java:jboss/datasources/PostgreSQLDS
+
+mvn clean install
+
+./target/server/bin/standalone.sh
+
+curl -X POST http://localhost:8080/hello/test-table/insert/somedata1/somedata2
+
+curl http://localhost:8080/hello/test-table/list
+----
+
 == Resources
 
 * https://wildfly.org[WildFly]
