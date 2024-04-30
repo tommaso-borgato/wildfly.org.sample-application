@@ -1,0 +1,81 @@
+
+= getting-started
+
+The `getting-started` project is a simple Jakarta EE application with a HTTP endpoint that is running in
+https://wildfly.org[WildFly].
+
+The `src/main` folder contains a simple 'Hello world' style Jakarta EE application using JAX-RS.
+
+== Building the application
+
+To run the application, you use Maven:
+
+[source,shell]
+----
+mvn clean package
+----
+
+Maven will compile the application, provision a WildFly server
+The WildFly server is created in `target/server` with the application deployed in it.
+
+== Running the application
+
+To run the application, run the commands:
+
+[source,shell]
+----
+cd target/server
+./bin/standalone.sh
+----
+
+Once WildFly is running, the application can be accessed at http://localhost:8080/
+
+== Testing the application
+
+To run integration tests to verify the application, you use Maven:
+
+[source,shell]
+----
+mvn clean package verify
+----
+
+Tests in `src/test` are run against the server in `target/server`.
+
+== Build Docker Image
+
+[source,shell]
+----
+$ podman build -t myapp:latest .
+----
+
+== Run the Docker Image
+
+[source,shell]
+----
+podman run --rm -p 8080:8080 -p 9990:9990 --name=myapp myapp
+----
+
+== Pushing to local Image Registry
+
+Tag thr image:
+[source,shell]
+----
+podman tag myapp localhost:5000/myapp
+----
+
+Start a local registry:
+[source,shell]
+----
+podman run --rm -p 5000:5000 --name registry registry:latest
+podman run --rm -p 5000:5000 --volume ~/.registry/storage:/var/lib/registry registry:latest
+----
+
+[source,shell]
+----
+podman push localhost:5000/myapp --tls-verify=false
+----
+
+== Resources
+
+* https://wildfly.org[WildFly]
+* https://docs.wildfly.org[WildFly Documentation]
