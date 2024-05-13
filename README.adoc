@@ -122,6 +122,15 @@ curl -X POST http://localhost:8080/hello/test-table/insert/somedata1/somedata2
 curl http://localhost:8080/hello/test-table/list
 ----
 
+
+[source,shell]
+----
+minikube config set rootless true
+minikube start --driver=podman --container-runtime=cri-o
+
+kubectl port-forward svc/postgres-external 5432:5432
+----
+
 == Resources
 
 * https://wildfly.org[WildFly]
