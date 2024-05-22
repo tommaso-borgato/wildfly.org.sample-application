@@ -131,6 +131,45 @@ minikube start --driver=podman --container-runtime=cri-o
 kubectl port-forward svc/postgres-external 5432:5432
 ----
 
+[source,shell]
+----
+podman pull docker.io/infinispan/server:latest
+
+# -p 11222:11222
+podman run --rm --net=host -e USER="admin" -e PASS="123pippobaudo" docker.io/infinispan/server:latest
+
+podman run --rm --net=host -it docker.io/infinispan/cli:latest 
+  connect http://admin:123pippobaudo@0.0.0.0:11222
+  ls caches
+podman run --rm --net=host -it docker.io/infinispan/cli:latest 
+  connect http://0.0.0.0:11222 -u admin -p 123pippobaudo
+  ls caches
+----
+
+try:
+[source,xml]
+----
+<subsystem xmlns="urn:jboss:domain:infinispan:12.0">
+    <remote-cache-containers>
+        <remote-cache-container name="infinispan-remote-container" default-remote-cluster="infinispan-cluster" module="org.infinispan.client.hotrod">
+            <remote-cluster name="infinispan-cluster">
+                <remote-server outbound-socket-binding="infinispan-server"/>
+            </remote-cluster>
+        </remote-cache-container>
+    </remote-cache-containers>
+</subsystem>
+
+<socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
+    <outbound-socket-binding name="infinispan-server">
+        <remote-destination host="infinispan-server-hostname" port="11222"/>
+    </outbound-socket-binding>
+</socket-binding-group>
+
+<subsystem xmlns="urn:jboss:domain:distributable-web:2.0">
+    <hotrod-session-management cache-container="infinispan-remote-container" client-ssl-context="none"/>
+</subsystem>
+----
+
 == Resources
 
 * https://wildfly.org[WildFly]
