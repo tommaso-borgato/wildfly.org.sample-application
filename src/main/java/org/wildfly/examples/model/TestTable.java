@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+@SuppressWarnings("serial")
 @Entity
 @XmlRootElement(name = "test-table")
 public class TestTable {
