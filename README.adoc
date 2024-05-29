@@ -18,6 +18,18 @@ mvn clean package
 Maven will compile the application, provision a WildFly server
 The WildFly server is created in `target/server` with the application deployed in it.
 
+== PostgreSQL
+
+[source,shell]
+----
+podman run --rm --name my-postgres \
+    -p 5432:5432 \
+    -e POSTGRES_PASSWORD=admin \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_DB=postgres \
+    docker.io/library/postgres
+----
+
 == Running the application
 
 To run the application, run the commands:
@@ -45,15 +57,21 @@ Tests in `src/test` are run against the server in `target/server`.
 
 [source,shell]
 ----
-podman build -t my-jaxrs-app:latest .
+podman build -t my-jaxrs-app-db:latest .
 ----
 
 == Run the Docker Image
 [source,shell]
 ----
 podman run --rm -p 8080:8080 -p 9990:9990 \
-    --name=my-jaxrs-app \
-    my-jaxrs-app
+    -e POSTGRESQL_USER=postgres \
+    -e POSTGRESQL_PASSWORD=admin \
+    -e POSTGRESQL_HOST=192.168.1.43 \
+    -e POSTGRESQL_PORT=5432 \
+    -e POSTGRESQL_DATABASE=postgres \
+    -e POSTGRESQL_JNDI=java:jboss/datasources/PostgreSQLDS \
+    --name=my-jaxrs-app-db \
+    my-jaxrs-app-db:latest
 ----
 
 == Check the application
