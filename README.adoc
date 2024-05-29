@@ -80,6 +80,13 @@ curl http://127.0.0.1:9990/health/ready
 curl http://127.0.0.1:9990/health/started
 ----
 
+== Deploy to Kubernetes
+
+[source,shell]
+----
+kubectl apply -f deployment-my-jaxrs-app.yaml
+----
+
 == Resources
 
 * https://wildfly.org[WildFly]
