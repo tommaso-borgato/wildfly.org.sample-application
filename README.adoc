@@ -80,6 +80,30 @@ curl http://127.0.0.1:9990/health/ready
 curl http://127.0.0.1:9990/health/started
 ----
 
+== Infinispan
+
+=== Start Infinispan
+
+[source,shell]
+----
+podman pull quay.io/infinispan/server:latest
+
+# -p 11222:11222
+podman run --rm --net=host -e USER="admin" -e PASS="123pippobaudo" quay.io/infinispan/server:latest
+----
+
+=== Connect to Infinispan
+
+[source,shell]
+----
+podman run --rm --net=host -it quay.io/infinispan/cli:latest
+  connect http://admin:123pippobaudo@0.0.0.0:11222
+  ls caches
+podman run --rm --net=host -it quay.io/infinispan/cli:latest
+  connect http://0.0.0.0:11222 -u admin -p 123pippobaudo
+  ls caches
+----
+
 == Resources
 
 * https://wildfly.org[WildFly]
