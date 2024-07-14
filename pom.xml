@@ -152,6 +152,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.jms</groupId>
+            <artifactId>jakarta.jms-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.ejb</groupId>
+            <artifactId>jakarta.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>org.jboss.ejb3</groupId>
+            <artifactId>jboss-ejb3-ext-api</artifactId>
+            <version>2.4.0.Final</version>
+            <scope>provided</scope>
+        </dependency>-->
+
         <!-- Test scope dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -219,7 +238,18 @@
                     <layers>
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
+                        <!-- Support for connections to a remote JMS broker -->
+                        <layer>messaging-activemq</layer>
+                        <!-- For the MDB -->
+                        <layer>ejb</layer>
                     </layers>
+                    <packaging-scripts>
+                        <packaging-script>
+                            <scripts>
+                                <script>script/activemq.cli</script>
+                            </scripts>
+                        </packaging-script>
+                    </packaging-scripts>
                 </configuration>
                 <executions>
                     <execution>

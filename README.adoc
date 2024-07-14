@@ -80,6 +80,23 @@ curl http://127.0.0.1:9990/health/ready
 curl http://127.0.0.1:9990/health/started
 ----
 
+== ActiveMQ Artemis - Docker
+
+- link:https://docs.wildfly.org/wildfly-proposals/messaging/WFLY-10518_artemis_no_local_broker.html[Connections to remote Artemis broker must not require local Artemis instance]
+- link:https://github.com/jms-ra/generic-jms-ra?tab=readme-ov-file#example-ejb3-mdb[Example EJB3 MDB]
+- link:https://activemq.apache.org/components/artemis/documentation/latest/docker.html[ActiveMQ Artemis - Docker]
+
+[source,bash,subs="normal"]
+----
+$ podman run --rm --name activemq-artemis -e ARTEMIS_USER=artemis -e ARTEMIS_PASSWORD=123PIPPOBAUDO -p 61616:61616 -p 8161:8161  apache/activemq-artemis:latest-alpine
+----
+
+[source,shell]
+----
+curl http://localhost:8080/hello/message/send?content=SOME-MESSAGE
+----
+
+
 == Resources
 
 * https://wildfly.org[WildFly]
