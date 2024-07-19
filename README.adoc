@@ -22,12 +22,12 @@ The WildFly server is created in `target/server` with the application deployed i
 
 [source,shell]
 ----
-podman run --rm --name my-postgres \
-    -p 5432:5432 \
-    -e POSTGRES_PASSWORD=admin \
-    -e POSTGRES_USER=postgres \
-    -e POSTGRES_DB=postgres \
-    docker.io/library/postgres
+podman run --rm --network=bridge --name my-postgres \
+  -p 5432:5432 \
+  -e POSTGRES_PASSWORD=admin \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_DB=postgres \
+  docker.io/library/postgres
 ----
 
 == Running the application
@@ -63,10 +63,12 @@ podman build -t my-jaxrs-app-db:latest .
 == Run the Docker Image
 [source,shell]
 ----
-podman run --rm -p 8080:8080 -p 9990:9990 \
+POSTGRESQL_CONTAINER_IP=$(podman inspect my-postgres | jq -r '.[].NetworkSettings.Networks[].IPAddress')
+
+podman run --rm --network=bridge -p 8080:8080 -p 9990:9990 \
     -e POSTGRESQL_USER=postgres \
     -e POSTGRESQL_PASSWORD=admin \
-    -e POSTGRESQL_HOST=192.168.1.43 \
+    -e POSTGRESQL_HOST=$POSTGRESQL_CONTAINER_IP \
     -e POSTGRESQL_PORT=5432 \
     -e POSTGRESQL_DATABASE=postgres \
     -e POSTGRESQL_JNDI=java:jboss/datasources/PostgreSQLDS \
