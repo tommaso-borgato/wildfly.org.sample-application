@@ -6,21 +6,19 @@ import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 import jakarta.jms.TextMessage;
-//import org.jboss.ejb3.annotation.ResourceAdapter;
 
 import java.util.logging.Logger;
 
 @MessageDriven(
-		name = "TestQueueMDB",
+		name = "GettingStartedQueueMDB",
 		activationConfig = {
+				@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "queue/gettingStartedQueue"),
 				@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue"),
-				@ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:/jms/remote/testQueue")
-		}
+				@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")}
 )
-//@ResourceAdapter("remote-activemq-pcf") // name of the pooled-connection-factory resource
-public class TestQueueMDB implements MessageListener {
+public class GettingStartedQueueMDB implements MessageListener {
 
-	private static final Logger LOGGER = Logger.getLogger(TestQueueMDB.class.toString());
+	private static final Logger LOGGER = Logger.getLogger(GettingStartedQueueMDB.class.toString());
 
 	public void onMessage(Message rcvMessage) {
 		TextMessage msg = null;

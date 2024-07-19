@@ -89,6 +89,14 @@ curl http://127.0.0.1:9990/health/started
 [source,bash,subs="normal"]
 ----
 $ podman run --rm --name activemq-artemis -e ARTEMIS_USER=artemis -e ARTEMIS_PASSWORD=123PIPPOBAUDO -p 61616:61616 -p 8161:8161  apache/activemq-artemis:latest-alpine
+
+podman run --rm --network=bridge --name my-artemis \
+    -p 8161:8161 \
+    -p 61616:61616\
+    -e AMQ_USER=artemis \
+    -e AMQ_PASSWORD=123PIPPOBAUDO \
+    -e AMQ_DATA_DIR=//home/jboss/data \
+    quay.io/artemiscloud/activemq-artemis-broker-kubernetes:latest
 ----
 
 [source,shell]

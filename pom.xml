@@ -239,17 +239,18 @@
                         <!-- layers may be used to customize the server to provision-->
                         <layer>cloud-server</layer>
                         <!-- Support for connections to a remote JMS broker -->
-                        <layer>messaging-activemq</layer>
+                        <!-- <layer>messaging-activemq</layer> -->
+                        <layer>remote-activemq</layer>
                         <!-- For the MDB -->
                         <layer>ejb</layer>
                     </layers>
-                    <packaging-scripts>
+                    <!--<packaging-scripts>
                         <packaging-script>
                             <scripts>
                                 <script>script/activemq.cli</script>
                             </scripts>
                         </packaging-script>
-                    </packaging-scripts>
+                    </packaging-scripts>-->
                 </configuration>
                 <executions>
                     <execution>
