@@ -1,4 +1,4 @@
-package org.wildfly.examples.test_table.service;
+package org.wildfly.examples.test_table;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -11,7 +11,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
-import org.wildfly.examples.test_table.model.TestTable;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class TestTableResource {
 		return em.createQuery("SELECT t FROM TestTable t", TestTable.class).getResultList();
 	}
 
-	@Transactional(Transactional.TxType.REQUIRED)
+	@Transactional
 	@POST
 	@Produces({"application/json"})
 	@Path("insert/{field1}/{field2}")

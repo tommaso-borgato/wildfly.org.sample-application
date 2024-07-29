@@ -1,4 +1,4 @@
-package org.wildfly.examples.test_table.model;
+package org.wildfly.examples.test_table;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
